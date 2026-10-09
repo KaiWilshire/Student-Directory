@@ -1,34 +1,52 @@
+import { useState } from "react";
 import Header from "./components/Header";
-import Footer from "./components/Footer";
 import StudentCard from "./components/StudentCard";
-
-const students = [
-  { id: 1, name: "Ana",  major: "IT", score: 82 },
-  { id: 2, name: "Boon", major: "CS", score: 58 },
-  { id: 3, name: "Chai", major: "IT", score: 74 },
-  { id: 4, name: "Dara", major: "CS", score: 91 },
-  { id: 5, name: "Eve",  major: "IT", score: 55 }
-];
+import AddStudentForm from "./components/AddStudentForm";
+import Footer from "./components/Footer";
 
 function App() {
-  return (
-    <>
-      <Header />
+  const [students, setStudents] = useState([
+    { id: 1, name: "Ana",  major: "IT", score: 82 },
+    { id: 2, name: "Boon", major: "CS", score: 58 },
+    { id: 3, name: "Chai", major: "IT", score: 74 },
+    { id: 4, name: "Dara", major: "CS", score: 91 },
+    { id: 5, name: "Eve",  major: "IT", score: 55 }
+  ]);
 
-      <main>
-        {students.map((student) => (
-          <StudentCard
-            key={student.id}
-            name={student.name}
-            major={student.major}
-            score={student.score}
-          />
-        ))}
-      </main>
-
-      <Footer count={students.length} />
-    </>
-  );
+function handleAddStudent(newStudent) {
+  setStudents([...students, newStudent]);
 }
+
+function handleDeleteStudent(id) {
+  setStudents(students.filter((student) => student.id !== id));
+}
+
+  // add and delete functions will be added next
+
+  return (
+  <>
+    <Header />
+
+    <AddStudentForm onAdd={handleAddStudent} />
+
+    <p>Current number of students: {students.length}</p>
+
+    <main>
+      {students.map((student) => (
+        <StudentCard
+          key={student.id}
+          id={student.id}
+          name={student.name}
+          major={student.major}
+          score={student.score}
+          onDelete={handleDeleteStudent}
+        />
+      ))}
+    </main>
+    <Footer count={students.length} />
+  </>
+);
+}
+
 
 export default App;
